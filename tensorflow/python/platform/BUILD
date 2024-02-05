@@ -183,6 +183,11 @@ tf_python_pybind_extension(
 pybind_extension(
     name = "_pywrap_cpu_feature_guard",
     srcs = ["cpu_feature_guard_wrapper.cc"],
+    linkopts = select({
+        "//tensorflow:macos": [
+            "-Wl,-framework,CoreFoundation",
+        ],
+    }),
     deps = [
         "//tensorflow/core/platform:cpu_feature_guard",
         "//third_party/python_runtime:headers",
@@ -246,6 +251,11 @@ tf_py_test(
 pybind_extension(
     name = "_pywrap_tf2",
     srcs = ["enable_tf2.cc"],
+    linkopts = select({
+        "//tensorflow:macos": [
+            "-Wl,-framework,CoreFoundation",
+        ],
+    }),
     hdrs = ["//tensorflow/core/platform:enable_tf2_hdr"],
     deps = [
         "//tensorflow/core:lib",
